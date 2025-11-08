@@ -31,40 +31,8 @@ export default function Register() {
                     <span className="text-sm font-medium">Volver al inicio</span>
                 </Link>
 
-                {/* Lado izquierdo - Imagen de fondo */}
-                <div className="hidden lg:flex lg:w-1/2 relative items-center justify-center p-12">
-                    {/* Imagen de fondo */}
-                    <div className="absolute inset-0">
-                        <img 
-                            src="https://images.pexels.com/photos/1199957/pexels-photo-1199957.jpeg" 
-                            alt="Background" 
-                            className="w-full h-full object-cover"
-                        />
-                        {/* Overlay negro transparente con blur */}
-                        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-                    </div>
-                    
-                    <div className="relative z-10 text-white max-w-md">
-                        <div className="flex items-center gap-3 mb-12">
-                            <img src="/images/BonAppétit-logo.png" alt="BonAppétit" className="h-10" />
-                            <span className="text-2xl font-serif tracking-wider">BonAppétit</span>
-                        </div>
-                        <h2 className="text-4xl font-light mb-6">¿Ya tienes una cuenta?</h2>
-                        <p className="text-lg text-white/80 mb-8">
-                            Inicia sesión para acceder a todas las funciones de nuestro servicio.
-                            Gestiona tu negocio en un solo lugar.
-                        </p>
-                        <Link
-                            href={route('login')}
-                            className="inline-block px-8 py-3 border-2 border-white text-white hover:bg-white hover:text-black transition-all duration-300"
-                        >
-                            Iniciar Sesión
-                        </Link>
-                    </div>
-                </div>
-
-                {/* Lado derecho - Formulario */}
-                <div className="w-full lg:w-1/2 relative flex items-center justify-center p-8">
+                {/* Formulario centrado con imagen de fondo */}
+                <div className="w-full relative flex items-center justify-center p-8">
                     {/* Imagen de fondo */}
                     <div className="absolute inset-0">
                         <img 
@@ -163,9 +131,10 @@ export default function Register() {
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className="w-full py-3 bg-gradient-to-r from-pink-600 to-red-600 text-white font-medium hover:from-pink-700 hover:to-red-700 transition-all duration-300 disabled:opacity-50"
+                                className="relative overflow-hidden w-full py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black font-medium transition-all duration-300 group hover:from-yellow-400 hover:to-yellow-500 shadow-lg hover:shadow-yellow-500/25 disabled:opacity-50"
                             >
-                                Registrarse
+                                <span className="absolute inset-0 bg-gradient-to-r from-yellow-300 to-yellow-400 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out"></span>
+                                <span className="relative z-10">Registrarse</span>
                             </button>
 
                             <div className="text-center">
