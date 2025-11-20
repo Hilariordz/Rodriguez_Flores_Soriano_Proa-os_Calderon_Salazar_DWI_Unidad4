@@ -1,0 +1,8 @@
+vendor
+node_modules
+storage/logs/*
+.env.local
+.git
+.gitignore
+npm-debug.log
+yarn-error.log
