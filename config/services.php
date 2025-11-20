@@ -35,4 +35,16 @@ return [
         ],
     ],
 
+    'spoonacular' => [
+        'key' => env('SPOONACULAR_KEY'),
+        'base_url' => 'https://api.spoonacular.com',
+        'timeout' => 10,
+        'cache' => [
+            'search' => 3600,      // 1 hora para búsquedas
+            'detail' => 86400,     // 24 horas para detalles
+            'random' => 1800,      // 30 minutos para aleatorias
+            'category' => 3600,    // 1 hora para categorías
+        ],
+    ],
+
 ];

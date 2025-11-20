@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -41,21 +42,31 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Ruta de búsqueda para el Dashboard (usa la API internamente)
+// Ruta de búsqueda para el Dashboard (usa la misma lógica de cache que la API)
 Route::get('/buscar', function (Illuminate\Http\Request $request) {
     if (!$request->has('query')) {
         return Inertia::render('Dashboard');
     }
 
-    $apiKey = env('SPOONACULAR_KEY');
-    $response = Http::timeout(10)->get("https://api.spoonacular.com/recipes/complexSearch", [
-        'query' => $request->query('query'),
-        'number' => 8,
-        'language' => 'es',
-        'cuisine' => 'mexican,spanish,latin american',
-        'apiKey' => $apiKey,
-    ]);
-    $recetas = $response->json();
+    $query = $request->query('query');
+    $apiKey = config('services.spoonacular.key');
+    
+    // Usar la misma clave de cache que el endpoint de API
+    $cacheKey = 'recetas_buscar_' . md5($query . '_8');
+    $cacheTTL = config('services.spoonacular.cache.search');
+    
+    $recetas = Cache::remember($cacheKey, $cacheTTL, function () use ($query, $apiKey) {
+        $response = Http::timeout(config('services.spoonacular.timeout'))
+            ->get(config('services.spoonacular.base_url') . '/recipes/complexSearch', [
+                'query' => $query,
+                'number' => 8,
+                'language' => 'es',
+                'cuisine' => 'mexican,spanish,latin american',
+                'apiKey' => $apiKey,
+            ]);
+        
+        return $response->json();
+    });
 
     return Inertia::render('Dashboard', ['recetas' => $recetas]);
 })->middleware(['auth', 'verified']);
